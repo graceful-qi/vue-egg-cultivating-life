@@ -23,7 +23,7 @@ export default {
   methods: {
     // 提交信息
     submitLogin: function () {
-      this.$data.hp++
+      this.$data.hp+=10
       console.log(this.$data.hp, this.$data.rate)
     }
   }
