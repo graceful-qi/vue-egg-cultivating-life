@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { Field, Icon, Toast } from 'vant'
+import { Toast } from 'vant'
 import { goH5 } from '@/utils'
 import routesMap from '@/router/lifegame/routesMap'
 export default {
@@ -26,10 +26,7 @@ export default {
       passWord: ''
     }
   },
-  components: {
-    'vue-input': Field,
-    'van-icon': Icon
-  },
+  components: {},
   methods: {
     // 提交信息
     submitLogin: function () {

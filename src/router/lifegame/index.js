@@ -3,11 +3,16 @@ import routesMap from './routesMap'
 export default [
   {
     path: routesMap.entrance,
-    name: 'Entrance',
+    name: 'lifegame_entrance',
     component: resolve => require(['@/routes/lifegame/view/entrance'], resolve)
   },
   {
+    path: routesMap.index,
+    name: 'lifegame_index',
+    component: resolve => require(['@/routes/lifegame/view/index'], resolve)
+  },
+  {
     path: routesMap.lifegame,
-    redirect: { name: 'Entrance' }
+    redirect: { name: 'lifegame_entrance' }
   }
 ]
