@@ -1,35 +1,35 @@
 <template>
   <div class="page module-box">
-    <user-state/>
+    <user-state />
   </div>
 </template>
 
 <script>
-import { goH5 } from '@/utils'
-import routesMap from '@/router/lifegame/routesMap'
-import state from './components/state'
+import { goH5 } from "@/utils";
+import routesMap from "@/router/lifegame/routesMap";
+import state from "./components/state";
 export default {
-  data () {
+  data() {
     return {
-      userName: '',
-      passWord: ''
-    }
+      userName: "",
+      passWord: ""
+    };
   },
   components: {
     userState: state
   },
   methods: {
     // 提交信息
-    submitLogin: function () {
-      const { passWord, userName } = this.$data
+    submitLogin: function() {
+      const { passWord, userName } = this.$data;
       window.localStorage.setItem(
-        'user',
+        "user",
         JSON.stringify({ userName, passWord })
-      )
-      goH5({ url: routesMap.index })
+      );
+      goH5({ url: routesMap.index });
     }
   }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
