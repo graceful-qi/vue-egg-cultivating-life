@@ -100,8 +100,16 @@ export const createAxiosInstance = (options = {}) => {
   } = options
 
   const axiosInstance = axios.create({
+    // // `baseURL` 将自动加在 `url` 前面，除非 `url` 是一个绝对 URL。
+    // // 它可以通过设置一个 `baseURL` 便于为 axios 实例的方法传递相对 URL
+    // baseURL: 'https://some-domain.com/api/',
     baseURL,
+    // // `timeout` 指定请求超时的毫秒数(0 表示无超时时间)
+    // // 如果请求话费了超过 `timeout` 的时间，请求将被中断
+    // timeout: 1000,
     timeout,
+    // // `headers` 是即将被发送的自定义请求头
+    // headers: {'X-Requested-With': 'XMLHttpRequest'},
     headers,
     // // `url` 是用于请求的服务器 URL
     // url: '/user',
@@ -109,9 +117,6 @@ export const createAxiosInstance = (options = {}) => {
     // // `method` 是创建请求时使用的方法
     // method: 'get', // 默认是 get
 
-    // // `baseURL` 将自动加在 `url` 前面，除非 `url` 是一个绝对 URL。
-    // // 它可以通过设置一个 `baseURL` 便于为 axios 实例的方法传递相对 URL
-    // baseURL: 'https://some-domain.com/api/',
 
     // // `transformRequest` 允许在向服务器发送前，修改请求数据
     // // 只能用在 'PUT', 'POST' 和 'PATCH' 这几个请求方法
@@ -128,8 +133,6 @@ export const createAxiosInstance = (options = {}) => {
     //   return data;
     // }],
 
-    // // `headers` 是即将被发送的自定义请求头
-    // headers: {'X-Requested-With': 'XMLHttpRequest'},
 
     // // `params` 是即将与请求一起发送的 URL 参数
     // // 必须是一个无格式对象(plain object)或 URLSearchParams 对象
@@ -153,9 +156,6 @@ export const createAxiosInstance = (options = {}) => {
     //   firstName: 'Fred'
     // },
 
-    // // `timeout` 指定请求超时的毫秒数(0 表示无超时时间)
-    // // 如果请求话费了超过 `timeout` 的时间，请求将被中断
-    // timeout: 1000,
 
     // // `withCredentials` 表示跨域请求时是否需要使用凭证
     // withCredentials: false, // 默认的
