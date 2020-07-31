@@ -10,8 +10,12 @@ module.exports = {
   //   enable: true,
   //   package: 'egg-mongoose',
   // },
-  // mysql = {
+  mysql: {
+    enable: true,
+    package: 'egg-mysql',
+  },
+  // io: {
   //   enable: true,
-  //   package: 'egg-mysql',
+  //   package: 'egg-socket.io',
   // }
 };
