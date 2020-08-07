@@ -17,4 +17,9 @@ axiosInstance.interceptors.response.use(null, (error) => {
 })
 export const getInfo = (params) => axiosInstance.get('/home/index', { params })
 
+
+export const getNul = (data) => axiosInstance.post('/nul', { data })
+
+
+
 // export const getActiveDetailInfo = (data) => axiosInstance.post('/yd/index/getActiveDetailInfo', { data })

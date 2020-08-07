@@ -10,7 +10,7 @@ const baseUrl = 'http://localhost:7001'
 const devConf = {
   // api 配置
   api: {
-    url: `/home`,
+    url: `/`,
   },
   url: {
     baseUrl

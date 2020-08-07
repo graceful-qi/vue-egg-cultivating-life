@@ -7,7 +7,7 @@
 </template>
 -->
 <script>
-import { getInfo } from '@/services/http/gobang'
+import { getInfo, getNul } from "@/services/http/gobang";
 export default {
   data() {
     return {
@@ -15,11 +15,16 @@ export default {
     };
   },
   beforeCreate: function () {
-    getInfo().then(res => {
-      console.log(res)
-    }).catch( err => {
-      console.log(err)
-    })
+    getNul({
+      test: 111,
+    }).then((res) => {});
+    getInfo()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     console.log(`beforeCreate`, this.title, this);
   },
   created: function () {
@@ -42,23 +47,32 @@ export default {
   },
 
   methods: {
-    changeTitle: function () {
+    changeTitle: function (e) {
       this.title = this.title === "连连看" ? "五子棋" : "连连看";
+      console.log("changeTitle", this);
+      this.showTitlt(11);
+      this.ddaa(e);
+      // this.$options.methods.showTitlt()
+      // setTimeout( () => {
+      //   console.log(1)
+      //   this.showTitlt()
+      // }, 0)
     },
-    showTitlt: function (e) {
-      console.log("showTitlt", this.title);
+    showTitlt: function (xxx) {
+      console.log("showTitlt", this.title, xxx);
+    },
+    ddaa: function (e) {
+      console.log(e);
     },
   },
   components: {},
   render: function (h) {
-    const {
-      title
-    } = this
+    const { title } = this;
     console.log(title);
     return (
       <div>
         {title}
-        <br/>
+        <br />
         <button onClick={this.changeTitle}>按钮</button>
       </div>
     );
