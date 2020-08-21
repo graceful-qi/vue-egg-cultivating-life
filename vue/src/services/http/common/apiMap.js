@@ -6,7 +6,7 @@ export default {
 
   },
   /**
-   *  GET
+   *  POST
    */
   POST: {
 

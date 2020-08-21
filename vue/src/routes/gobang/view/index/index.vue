@@ -1,23 +1,38 @@
-<!-- <template>
+
+<template>
   <div>
-    <input @change="showTitlt" :value="title" />
-    <anchored-heading :title="title"></anchored-heading>
-    <button @click="changeTitle">按钮</button>
+    <keep-alive>
+      <div v-if="a > 1">2</div>
+      <div v-else>{{title}}</div>
+      <input type="text" :modal="title" />
+    </keep-alive>
+    <br />
+    <button @click="ddaa">按钮</button>
+    <div>
+      <p>
+        <span></span>
+      </p>
+    </div>
   </div>
 </template>
--->
+<!-- -->
 <script>
-import { getInfo, getNul } from "@/services/http/gobang";
+import {
+  getInfo,
+  // getNul
+} from "@/services/http/gobang";
+
 export default {
-  data() {
+  data() {  
     return {
       title: `五子棋`,
+      a: 2,
     };
   },
   beforeCreate: function () {
-    getNul({
-      test: 111,
-    }).then((res) => {});
+    // getNul({
+    //   test: 111,
+    // }).then((res) => {});
     getInfo()
       .then((res) => {
         console.log(res);
@@ -50,8 +65,9 @@ export default {
     changeTitle: function (e) {
       this.title = this.title === "连连看" ? "五子棋" : "连连看";
       console.log("changeTitle", this);
+
       this.showTitlt(11);
-      this.ddaa(e);
+      // this.ddaa(e);
       // this.$options.methods.showTitlt()
       // setTimeout( () => {
       //   console.log(1)
@@ -62,21 +78,22 @@ export default {
       console.log("showTitlt", this.title, xxx);
     },
     ddaa: function (e) {
-      console.log(e);
+      this.a--;
+      console.log(this.a);
     },
   },
   components: {},
-  render: function (h) {
-    const { title } = this;
-    console.log(title);
-    return (
-      <div>
-        {title}
-        <br />
-        <button onClick={this.changeTitle}>按钮</button>
-      </div>
-    );
-  },
+  // render: function (h) {
+  //   const { title } = this;
+  //   console.log(title);
+  //   return (
+  //     <div>
+  //       {title}
+  //       <br />
+  //       <button onClick={this.changeTitle}>按钮</button>
+  //     </div>
+  //   );
+  // },
 };
 </script>
 

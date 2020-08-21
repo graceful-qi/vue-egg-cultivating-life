@@ -11,20 +11,20 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // '/home': {//代理
-      //   target: 'http://localhost:7001',//接口域名
-      //   changeOrigin: true, //是否跨域
-      //   pathRewrite: {
-      //     '^/home': '' //需要rewrite重写
-      //   },
-      // },
       '/': {//代理
-        target: 'http://localhost:3000/',//接口域名
+        target: 'http://localhost:7001',//接口域名
         changeOrigin: true, //是否跨域
         pathRewrite: {
           '^/': '' //需要rewrite重写
         },
       },
+      // '/': {//代理
+      //   target: 'http://localhost:3000/',//接口域名
+      //   changeOrigin: true, //是否跨域
+      //   pathRewrite: {
+      //     '^/': '' //需要rewrite重写
+      //   },
+      // },
     },
 
     // Various Dev Server settings

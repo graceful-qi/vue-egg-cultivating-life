@@ -45,6 +45,65 @@ export const validatePhone = phone => {
 }
 
 /**
+ * 页面底部动态插入 js
+ * @param src
+ * @returns {Promise<any>}
+ */
+export const insertScript = src => {
+  return new Promise((resolve, reject) => {
+    let script = document.createElement('script')
+
+    document.body.appendChild(script)
+
+    script.addEventListener('load', () => {
+      script = null
+      resolve()
+    })
+    script.addEventListener('error', () => {
+      script = null
+      reject()
+    })
+
+    script.src = src
+  })
+}
+
+/**
+ * 判断运行时环境是否为 app
+ * @returns {boolean}
+ */
+export const getRunTimeEnvIsApp = () => {
+  const UA = window.navigator.userAgent
+  const reg = /APP/i
+  return reg.test(UA)
+}
+
+/**
+ * 判断用户来源 来自哪端设备
+ * @returns {strind}
+ */
+export const userSource = () => {
+  const UA = window.navigator.userAgent
+  if(/(iPhone|iPad|iPod|iOS)/i.test(UA)){
+    return 'Apple'
+  }else if(/(Android)/i.test(UA)){
+    return 'Android'
+  }else{
+    return 'PC'
+  }
+}
+
+/**
+  * 判断运行时环境是否为 weixin
+  * @returns {boolean}
+ */
+export const getRunTimeEnvIsWx = () => {
+  const UA = window.navigator.userAgent
+  const reg = /MicroMessenger/i
+  return reg.test(UA)
+}
+
+/**
  * 获取 url 全路径
  * @param location
  * @returns {*}
@@ -52,6 +111,30 @@ export const validatePhone = phone => {
 export const getFullPath = location => {
   return location.pathname + location.search + location.hash
 }
+
+/**
+ * 获取 hash router 的查询参数
+ * @returns {string}
+ */
+export const getHashRouterQueryString = () => {
+  const url = new URL(`about:blank${window.location.hash.slice(1)}`)
+  return url.search
+}
+
+/**
+ * 确保 string 末尾有 '/'
+ * @param str {string}
+ * @returns {string}
+ */
+export const ensureTailHasSlash = str => /.*\/$/.test(str) ? str : str + '/'
+
+/**
+ * 确保 string 开头没有 '/'
+ * @param str {string}
+ * @reutrns {string}
+ */
+export const ensureCapitalHasNotSlash = str => /^\/.*/.test(str) ? str.slice(1) : str
+
 
 export const uuid = () => {
   let s = []
@@ -121,6 +204,36 @@ export const dateRange = (start, end, period = 'days') => {
 export const paddingZero = num => num < 10 ? '0' + num : num
 
 /**
+ * 倒计时
+ * @param count {number}
+ * @param callback {function}
+ * @param step {number}
+ * @param interval {number}
+ * @returns {{unsubscribe: function}}
+ */
+export const countDown = (count, callback, step = 1, interval = 1000) => {
+  let timer = null
+
+  const clearInterval = () => {
+    timer && window.clearInterval(timer)
+  }
+
+  const intervalHandler = () => {
+    if (count <= 0) clearInterval()
+    if (callback) callback(count)
+    count -= step
+  }
+
+  intervalHandler()
+
+  timer = window.setInterval(intervalHandler, interval)
+
+  return {
+    unsubscribe: clearInterval,
+  }
+}
+
+/**
  * 跳转页面
  * @param {string} url H5地址
  * @param {number} new_page 是否打开新页面(1: 新页面；0: 当前页面)
@@ -150,13 +263,80 @@ export const goH5 = (
   }
 }
 
+/**
+ * 页面滚动到制定位置
+ * @param scrollTargetY
+ * @param speed
+ * @param easing
+ */
+export function scrollToY(scrollTargetY = 0, speed = 2000, easing = 'easeOutSine') {
+  return new Promise((resolve) => {
+    // scrollTargetY: the target scrollY property of the window
+    // speed: time in pixels per second
+    // easing: easing equation to use
+
+    var scrollY = window.scrollY,
+      currentTime = 0;
+
+    // min time .1, max time .8 seconds
+    var time = Math.max(.1, Math.min(Math.abs(scrollY - scrollTargetY) / speed, .8));
+
+    // easing equations from https://github.com/danro/easing-js/blob/master/easing.js
+    var easingEquations = {
+        easeOutSine: function (pos) {
+          return Math.sin(pos * (Math.PI / 2));
+        },
+        easeInOutSine: function (pos) {
+          return (-0.5 * (Math.cos(Math.PI * pos) - 1));
+        },
+        easeInOutQuint: function (pos) {
+          if ((pos /= 0.5) < 1) {
+            return 0.5 * Math.pow(pos, 5);
+          }
+          return 0.5 * (Math.pow((pos - 2), 5) + 2);
+        }
+      };
+
+    // add animation loop
+    function tick() {
+      currentTime += 1 / 60;
+
+      var p = currentTime / time;
+      var t = easingEquations[easing](p);
+
+      if (p < 1) {
+        raf(tick);
+
+        window.scrollTo(0, scrollY + ((scrollTargetY - scrollY) * t));
+      } else {
+        // console.log('scroll done');
+        window.scrollTo(0, scrollTargetY);
+        resolve()
+      }
+    }
+
+    // call it once to get started
+    tick();
+  })
+}
+
+
 export default {
   isFunc,
   validatePhone,
+  insertScript,
+  getRunTimeEnvIsApp,
+  getRunTimeEnvIsWx,
+  userSource,
   getFullPath,
+  getHashRouterQueryString,
+  ensureTailHasSlash,
+  ensureCapitalHasNotSlash,
   uuid,
   loadImage,
   dateRange,
   paddingZero,
-  goH5
+  goH5,
+  scrollToY,
+  countDown
 }

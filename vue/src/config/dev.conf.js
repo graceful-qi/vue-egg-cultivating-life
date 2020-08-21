@@ -13,9 +13,8 @@ const devConf = {
     url: `/`,
   },
   url: {
-    baseUrl
-  },
-  webSocket: {
+    baseUrl,
+    webSocketUrl: `ws://`
   },
 }
 
