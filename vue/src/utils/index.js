@@ -3,6 +3,7 @@ import { extendMoment } from 'moment-range'
 
 const moment = extendMoment(Moment)
 
+// 判断类型 环境
 /**
  * 判断值是否为空
  * @param v
@@ -17,6 +18,42 @@ export const isUndef = v => v === undefined
  */
 export const isFunc = func => typeof func === 'function'
 
+/**
+ * 判断运行时环境是否为 app
+ * @returns {boolean}
+ */
+export const getRunTimeEnvIsApp = () => {
+  const UA = window.navigator.userAgent
+  const reg = /APP/i
+  return reg.test(UA)
+}
+
+/**
+ * 判断用户来源 来自哪端设备
+ * @returns {strind}
+ */
+export const userSource = () => {
+  const UA = window.navigator.userAgent
+  if (/(iPhone|iPad|iPod|iOS)/i.test(UA)) {
+    return 'Apple'
+  } else if (/(Android)/i.test(UA)) {
+    return 'Android'
+  } else {
+    return 'PC'
+  }
+}
+
+/**
+  * 判断运行时环境是否为 weixin
+  * @returns {boolean}
+ */
+export const getRunTimeEnvIsWx = () => {
+  const UA = window.navigator.userAgent
+  const reg = /MicroMessenger/i
+  return reg.test(UA)
+}
+
+// 校验
 /**
  * 校验手机号是否合法
  * @param phone
@@ -44,65 +81,7 @@ export const validatePhone = phone => {
   return cmReg.test(phone) || cuReg.test(phone) || ctReg.test(phone)
 }
 
-/**
- * 页面底部动态插入 js
- * @param src
- * @returns {Promise<any>}
- */
-export const insertScript = src => {
-  return new Promise((resolve, reject) => {
-    let script = document.createElement('script')
-
-    document.body.appendChild(script)
-
-    script.addEventListener('load', () => {
-      script = null
-      resolve()
-    })
-    script.addEventListener('error', () => {
-      script = null
-      reject()
-    })
-
-    script.src = src
-  })
-}
-
-/**
- * 判断运行时环境是否为 app
- * @returns {boolean}
- */
-export const getRunTimeEnvIsApp = () => {
-  const UA = window.navigator.userAgent
-  const reg = /APP/i
-  return reg.test(UA)
-}
-
-/**
- * 判断用户来源 来自哪端设备
- * @returns {strind}
- */
-export const userSource = () => {
-  const UA = window.navigator.userAgent
-  if(/(iPhone|iPad|iPod|iOS)/i.test(UA)){
-    return 'Apple'
-  }else if(/(Android)/i.test(UA)){
-    return 'Android'
-  }else{
-    return 'PC'
-  }
-}
-
-/**
-  * 判断运行时环境是否为 weixin
-  * @returns {boolean}
- */
-export const getRunTimeEnvIsWx = () => {
-  const UA = window.navigator.userAgent
-  const reg = /MicroMessenger/i
-  return reg.test(UA)
-}
-
+// url处理
 /**
  * 获取 url 全路径
  * @param location
@@ -136,37 +115,7 @@ export const ensureTailHasSlash = str => /.*\/$/.test(str) ? str : str + '/'
 export const ensureCapitalHasNotSlash = str => /^\/.*/.test(str) ? str.slice(1) : str
 
 
-export const uuid = () => {
-  let s = []
-  let hexDigits = '0123456789abcdef'
-  for (let i = 0; i < 36; i++) {
-    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
-  }
-  s[14] = '4' // bits 12-15 of the time_hi_and_version field to 0010
-  s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1) // bits 6-7 of the clock_seq_hi_and_reserved to 01
-  // s[8] = s[13] = s[18] = s[23] = "=";
-  return s.join('')
-}
-
-/**
- * 加载图片
- * @param src: string
- * @returns {Promise<any>}
- */
-export const loadImage = src => {
-  return new Promise((resolve, reject) => {
-    const image = new Image()
-
-    image.addEventListener('load', () => {
-      resolve(image)
-    })
-    image.addEventListener('error', err => {
-      reject(err)
-    })
-
-    image.src = src
-  })
-}
+// 时间 倒计时
 
 /**
  * 返回时间范围
@@ -197,13 +146,6 @@ export const dateRange = (start, end, period = 'days') => {
 }
 
 /**
- * 十位补零
- * @param num
- * @returns {string}
- */
-export const paddingZero = num => num < 10 ? '0' + num : num
-
-/**
  * 倒计时
  * @param count {number}
  * @param callback {function}
@@ -231,6 +173,106 @@ export const countDown = (count, callback, step = 1, interval = 1000) => {
   return {
     unsubscribe: clearInterval,
   }
+}
+
+// 数字处理
+
+/**
+ * 十位补零
+ * @param num
+ * @returns {string}
+ */
+export const paddingZero = num => num < 10 ? '0' + num : num
+
+/**
+ * 获取指定范围内的随机数
+ * @param min 开始数字 
+ * @param max 结束数字
+ */
+export const getRadomNum = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
+
+// 字符串处理
+/**
+ * 查找字符串中的最长公共前缀
+ * @param arr 字符串数组
+ */
+export const getMaxStrPart = (arr) => {
+  let firstStr = arr[0], result = ''
+  if (!arr.length) return result
+  for (let i = 0; i < firstStr.length; i++) {
+    for (let j = 1; j < arr.length; j++) {
+      if (firstStr[i] != arr[j][i]) {
+        return result
+      }
+
+    }
+    result += firstStr[i]
+  }
+  return result
+}
+
+/**
+ * 统计一个字符串出现最多的字母
+ * @param obj 数据
+ * @returns 
+ */
+export const getMaxStrLetter = (arr) => {
+  if (!arr.length) return;
+  if (arr.length === 1) return { maxel: arr[0], maxnum: 1 };
+  let h = {}, maxnum = 0, maxel = '';
+  for (let i = 0; i < arr.length; i++) {
+    let a = arr[i]
+    h[a] === undefined ? h[a] = 1 : (h[a]++)
+    if (h[a] > maxnum) {
+      maxnum = h[a]
+      maxel = a
+    }
+  }
+  return { maxel, maxnum }
+}
+
+// 数组 对象处理
+
+/**
+ * 去掉一组一维数组重复的值
+ * @param obj 数据
+ */
+export const unique = (arr) => {
+  let hashTable = {};
+  let data = [];
+  for (let i = 0, l = arr.length; i < l; i++) {
+    if (!hashTable[arr[i]]) {
+      hashTable[arr[i]] = true;
+      data.push(arr[i]);
+    }
+  }
+  return data
+}
+
+/**
+ * 通过JSON来进行数组对象的 深拷贝
+ * @param obj 数据
+ */
+export const deepClone = (obj) => {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+/**
+ * 生成斐波那契数组
+ * @param n 数组长度
+ */
+export const getFibonacci = (n) => {
+  let fibarr = [];
+  let i = 0;
+  while (i < n) {
+    if (i <= 1) {
+      fibarr.push(i);
+    } else {
+      fibarr.push(fibarr[i - 1] + fibarr[i - 2])
+    }
+    i++;
+  }
+  return fibarr;
 }
 
 /**
@@ -269,40 +311,40 @@ export const goH5 = (
  * @param speed
  * @param easing
  */
-export function scrollToY(scrollTargetY = 0, speed = 2000, easing = 'easeOutSine') {
+export const scrollToY = (scrollTargetY = 0, speed = 2000, easing = 'easeOutSine') => {
   return new Promise((resolve) => {
     // scrollTargetY: the target scrollY property of the window
     // speed: time in pixels per second
     // easing: easing equation to use
 
-    var scrollY = window.scrollY,
+    let scrollY = window.scrollY,
       currentTime = 0;
 
     // min time .1, max time .8 seconds
-    var time = Math.max(.1, Math.min(Math.abs(scrollY - scrollTargetY) / speed, .8));
+    let time = Math.max(.1, Math.min(Math.abs(scrollY - scrollTargetY) / speed, .8));
 
     // easing equations from https://github.com/danro/easing-js/blob/master/easing.js
-    var easingEquations = {
-        easeOutSine: function (pos) {
-          return Math.sin(pos * (Math.PI / 2));
-        },
-        easeInOutSine: function (pos) {
-          return (-0.5 * (Math.cos(Math.PI * pos) - 1));
-        },
-        easeInOutQuint: function (pos) {
-          if ((pos /= 0.5) < 1) {
-            return 0.5 * Math.pow(pos, 5);
-          }
-          return 0.5 * (Math.pow((pos - 2), 5) + 2);
+    let easingEquations = {
+      easeOutSine: function (pos) {
+        return Math.sin(pos * (Math.PI / 2));
+      },
+      easeInOutSine: function (pos) {
+        return (-0.5 * (Math.cos(Math.PI * pos) - 1));
+      },
+      easeInOutQuint: function (pos) {
+        if ((pos /= 0.5) < 1) {
+          return 0.5 * Math.pow(pos, 5);
         }
-      };
+        return 0.5 * (Math.pow((pos - 2), 5) + 2);
+      }
+    };
 
     // add animation loop
     function tick() {
       currentTime += 1 / 60;
 
-      var p = currentTime / time;
-      var t = easingEquations[easing](p);
+      let p = currentTime / time;
+      let t = easingEquations[easing](p);
 
       if (p < 1) {
         raf(tick);
@@ -320,23 +362,95 @@ export function scrollToY(scrollTargetY = 0, speed = 2000, easing = 'easeOutSine
   })
 }
 
+/**
+ * 页面底部动态插入 js
+ * @param src
+ * @returns {Promise<any>}
+ */
+export const insertScript = src => {
+  return new Promise((resolve, reject) => {
+    let script = document.createElement('script')
+
+    document.body.appendChild(script)
+
+    script.addEventListener('load', () => {
+      script = null
+      resolve()
+    })
+    script.addEventListener('error', () => {
+      script = null
+      reject()
+    })
+
+    script.src = src
+  })
+}
+
+// 通用唯一识别码 uuid生成
+export const uuid = () => {
+  let s = []
+  let hexDigits = '0123456789abcdef'
+  for (let i = 0; i < 36; i++) {
+    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
+  }
+  s[14] = '4' // bits 12-15 of the time_hi_and_version field to 0010
+  s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1) // bits 6-7 of the clock_seq_hi_and_reserved to 01
+  // s[8] = s[13] = s[18] = s[23] = "=";
+  return s.join('')
+}
+
+/**
+ * 加载图片
+ * @param src: string
+ * @returns {Promise<any>}
+ */
+export const loadImage = src => {
+  return new Promise((resolve, reject) => {
+    const image = new Image()
+
+    image.addEventListener('load', () => {
+      resolve(image)
+    })
+    image.addEventListener('error', err => {
+      reject(err)
+    })
+
+    image.src = src
+  })
+}
+
 
 export default {
+  // 判断类型 环境
+  isUndef,
   isFunc,
-  validatePhone,
-  insertScript,
   getRunTimeEnvIsApp,
-  getRunTimeEnvIsWx,
   userSource,
+  getRunTimeEnvIsWx,
+  // 校验
+  validatePhone,
+  // url处理
   getFullPath,
   getHashRouterQueryString,
   ensureTailHasSlash,
   ensureCapitalHasNotSlash,
-  uuid,
-  loadImage,
+  // 时间 倒计时
   dateRange,
+  countDown,
+  // 数字处理
   paddingZero,
+  getRadomNum,
+  // 字符串处理
+  getMaxStrPart,
+  getMaxStrLetter,
+  // 数组 对象处理
+  unique,
+  deepClone,
+  getFibonacci,
+  // 其他
   goH5,
   scrollToY,
-  countDown
+  insertScript,
+  uuid,
+  loadImage,
 }

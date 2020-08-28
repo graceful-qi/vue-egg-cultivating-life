@@ -21,7 +21,6 @@ import {
   getInfo,
   // getNul
 } from "@/services/http/gobang";
-
 export default {
   data() {  
     return {
@@ -78,8 +77,7 @@ export default {
       console.log("showTitlt", this.title, xxx);
     },
     ddaa: function (e) {
-      this.a--;
-      console.log(this.a);
+     this.$store.dispatch('testAe',{age:15})
     },
   },
   components: {},
@@ -99,4 +97,5 @@ export default {
 
 <style lang="stylus" scoped>
 @import './index.styl';
+
 </style>

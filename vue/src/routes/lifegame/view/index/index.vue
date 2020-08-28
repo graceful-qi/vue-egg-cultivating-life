@@ -2,6 +2,7 @@
   <div class="page module-box">
     <!-- <user-state /> -->
     红警
+    <button>aaa</button>
   </div>
 </template>
 

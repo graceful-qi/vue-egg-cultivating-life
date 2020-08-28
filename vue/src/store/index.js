@@ -10,29 +10,36 @@ const store = new Vuex.Store({
     name: 'helloVueX'
   },
   mutations: { // 同步处理
-    edit (state, payload) {
+    edit(state, payload) {
       Vue.set(state, 'age', payload.age) // $set
-      Vue.delete(state, 'age')
+      // Vue.delete(state, 'age')
     }
     // this.$store.commit('edit',{age:15,sex:'男'})
   },
   getters: {
-    nameInfo (state) {
+    nameInfo(state) {
       return '姓名:' + state.name
     },
 
-    fullInfo (state, getters) {
+    fullInfo(state, getters) {
       return getters.nameInfo + '年龄:' + state.age
     }
     // this.$store.getters.fullInfo
   },
   actions: { // 异步 同mutations
-    aEdit (context, payload) {
+    aEdit(context, payload) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           context.commit('edit', payload)
-          resolve()
+          resolve('111')
         }, 2000)
+      })
+    },
+    testAe({ commit, dispatch, state }, payload) {
+      const oldState = state
+      console.log(oldState)
+      dispatch('aEdit', payload).then(res => {
+        console.log(122, res, state, oldState)
       })
     }
     // this.$store.dispatch('aEdit',{age:15})
