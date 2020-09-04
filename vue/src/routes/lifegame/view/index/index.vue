@@ -36,4 +36,5 @@ export default {
 
 <style lang="stylus" scoped>
 @import './index.styl';
+
 </style>
